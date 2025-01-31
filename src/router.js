@@ -8,6 +8,8 @@ export function router() {
     '/about': () => import('./pages/About.js').then(m => m.About())
   };
 
+  let fullPageInstance = null;
+
   async function handleRoute() {
     const path = window.location.pathname;
     
@@ -24,6 +26,11 @@ export function router() {
     const navigation = await import('./components/Navigation.js').then(m => m.Navigation());
     const footer = await import('./components/Footer.js').then(m => m.Footer());
     
+    // Destroy existing fullpage instance if it exists
+    if (fullPageInstance) {
+      $('#fullpage').fullpage.destroy('all');
+    }
+
     const app = document.querySelector('#app');
     app.innerHTML = `
       <div class="fullpage-wrapper">
@@ -43,8 +50,7 @@ export function router() {
     `;
 
     // Initialize fullPage.js
-    new fullpage('#fullpage', {
-      licenseKey: 'YOUR_KEY_HERE',
+    $('#fullpage').fullpage({
       autoScrolling: true,
       scrollHorizontally: true,
       navigation: true,
@@ -52,38 +58,40 @@ export function router() {
       navigationTooltips: ['Home', 'Mentors', 'Students', 'Projects', 'Memories', 'About'],
       showActiveTooltip: true,
       scrollingSpeed: 1000,
-      onLeave: (origin, destination, direction) => {
+      onLeave: function(origin, destination, direction) {
         // Add zoom out effect to the leaving section
-        origin.item.style.transform = 'scale(0.8)';
-        origin.item.style.opacity = '0';
+        $(origin.item).css({
+          'transform': 'scale(0.8)',
+          'opacity': '0'
+        });
         
         // Add zoom in effect to the destination section
-        destination.item.style.transform = 'scale(1)';
-        destination.item.style.opacity = '1';
+        $(destination.item).css({
+          'transform': 'scale(1)',
+          'opacity': '1'
+        });
         
         // Update navigation active state
-        document.querySelectorAll('.nav-link').forEach(link => {
-          const href = link.getAttribute('href').substring(1);
+        $('.nav-link').each(function() {
+          const href = $(this).attr('href').substring(1);
           if (href === destination.anchor) {
-            link.classList.add('active');
+            $(this).addClass('active');
           } else {
-            link.classList.remove('active');
+            $(this).removeClass('active');
           }
         });
       }
     });
 
     // Handle navigation clicks
-    document.querySelectorAll('a[href^="/"]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        const href = link.getAttribute('href');
-        if (href.startsWith('/')) {
-          e.preventDefault();
-          const anchor = href.substring(1) || 'home';
-          fullpage_api.moveTo(anchor);
-          window.history.pushState({}, '', href);
-        }
-      });
+    $(document).on('click', 'a[href^="/"]', function(e) {
+      const href = $(this).attr('href');
+      if (href.startsWith('/')) {
+        e.preventDefault();
+        const anchor = href.substring(1) || 'home';
+        $.fn.fullpage.moveTo(anchor);
+        window.history.pushState({}, '', href);
+      }
     });
   }
 

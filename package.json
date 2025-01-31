@@ -15,7 +15,6 @@
     "tailwindcss": "^3.4.1"
   },
   "dependencies": {
-    "styled-components": "^6.1.8",
-    "fullpage.js": "^4.0.20"
+    "styled-components": "^6.1.8"
   }
 }
