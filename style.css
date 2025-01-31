@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Navigation styles */
+.nav-button {
+  @apply px-4 py-2 rounded-lg transition-all duration-300;
+}
+
+.primary-button {
+  @apply bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:opacity-90 transition-opacity nav-button;
+}
+
+.secondary-button {
+  @apply bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:opacity-90 transition-opacity nav-button;
+}
+
+.outline-button {
+  @apply border-2 border-gray-200 text-gray-200 hover:bg-gray-200 hover:text-gray-900 transition-all nav-button;
+}
+
+.geometric-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* FullPage.js styles */
+.fullpage-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #111827;
+}
+
+.section {
+  transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+  background-color: #111827;
+}
+
+/* Navigation dots */
+#fp-nav ul li a span {
+  background: #6B4EFF !important;
+}
+
+#fp-nav ul li .fp-tooltip {
+  color: #fff !important;
+}
+
+/* Section transitions */
+.section {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.section.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-700;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-600;
+}
+
+/* Make sure navigation stays on top */
+nav {
+  z-index: 1000 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .section {
+    padding: 1rem;
+  }
+  
+  #fp-nav {
+    display: none;
+  }
+}
